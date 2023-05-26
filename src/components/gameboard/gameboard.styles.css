@@ -7,9 +7,14 @@
   }
   
   .cell {
+    cursor: pointer;
     width: 150px;
     height: 150px;
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
   }
 
   .top-left {
