@@ -1,93 +1,67 @@
 import "./gameboard.styles.css";
 import StyledCell from "../Cells/cell.component";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import PlayerX from "../players/playerX.component";
 import PlayerO from "../players/playerO.component";
-
+import Toby from "../computer-player/toby";
+import { GameContext } from "../../context/gamecontext";
 
 const Gameboard = () => {
-    const [board, setBoard] = useState(Array(9).fill(''));
-    // default player is X
-    const [currentPlayer, setCurrentPlayer] = useState('X');
-    const [animateX, setAnimateX] = useState(false);
-    const [animateO, setAnimateO] = useState(false);
+  const {gameState, setGameState} = useContext(GameContext);
 
-    const handleCellClick = (index) => {
-       if (board[index] === '') {
-        const updatedBoard = [...board];
-        // keeping track of player's turn
-        updatedBoard[index] = currentPlayer;
-        setBoard(updatedBoard);
-        setAnimateX(true);
-        // animate player's turn
-        if (currentPlayer === 'X') {
-            setAnimateX(true);
-          } else {
-            setAnimateO(true);
+  const [currentPlayer, setCurrentPlayer] = useState('X');
+  const [animateX, setAnimateX] = useState(false);
+  const [animateO, setAnimateO] = useState(false);
+
+  const handleCellClick = (index) => {
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+
+    if (gameState[row][col] === '') {
+      const updatedGameState = gameState.map((rowArr, rowIndex) =>
+        rowArr.map((cell, colIndex) => {
+          if (rowIndex === row && colIndex === col) {
+            return currentPlayer;
           }
-        // turn switching on cell click
+          return cell;
+        })
+      );
+      setGameState(updatedGameState);
+      setAnimateX(true);
+      setAnimateO(true);
+
+      setTimeout(() => {
+        setAnimateO(false);
+        setAnimateX(false);
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      }, 1000);
+    }
+  };
 
+  const getValue = (index) => {
+    const row = Math.floor(index / 3);
+    const col = index % 3;
+    if (gameState[row][col] === 'X') {
+      return <PlayerX animate={animateX} />;
+    } else if (gameState[row][col] === 'O') {
+      return <PlayerO animate={animateO} />;
+    } else {
+      return '';
+    }
+  }
 
-        setTimeout(() => {
-            setAnimateO(false);
-            setAnimateX(false);
-          }, 1000);
-       } else {
-        return;
-       }
-      };
-
-    return (
+  return (
     <div className="game-board">
-      <StyledCell
-        className="cell top-left"
-        onClick={() => handleCellClick(0)}
-        value={board[0] === 'X' ? <PlayerX animate={animateX} /> : (board[0] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell top-center"
-        onClick={() => handleCellClick(1)}
-        value={board[1] === 'X' ? <PlayerX animate={animateX} /> : (board[1] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell top-right"
-        onClick={() => handleCellClick(2)}
-        value={board[2] === 'X' ? <PlayerX animate={animateX} /> : (board[2] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell middle-left"
-        onClick={() => handleCellClick(3)}
-        value={board[3] === 'X' ? <PlayerX animate={animateX} /> : (board[3] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell middle-center"
-        onClick={() => handleCellClick(4)}
-        value={board[4] === 'X' ? <PlayerX animate={animateX} /> : (board[4] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell middle-right"
-        onClick={() => handleCellClick(5)}
-        value={board[5] === 'X' ? <PlayerX animate={animateX} /> : (board[5] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell bottom-left"
-        onClick={() => handleCellClick(6)}
-        value={board[6] === 'X' ? <PlayerX animate={animateX} /> : (board[6] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell bottom-center"
-        onClick={() => handleCellClick(7)}
-        value={board[7] === 'X' ? <PlayerX animate={animateX} /> : (board[7] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
-      <StyledCell
-        className="cell bottom-right"
-        onClick={() => handleCellClick(8)}
-        value={board[8] === 'X' ? <PlayerX animate={animateX} /> : (board[8] === 'O' ? <PlayerO animate={animateO} /> : '')}
-      />
+      {[...Array(9).keys()].map(index => (
+        <StyledCell
+          className={`cell ${index}`}
+          onClick={() => handleCellClick(index)}
+          value={getValue(index)}
+        />
+      ))}
+      {currentPlayer === 'O' && <Toby currentPlayer={currentPlayer} setCurrentPlayer={setCurrentPlayer} />}
     </div>
-    
-    )
+  )
 }
 
 export default Gameboard;
