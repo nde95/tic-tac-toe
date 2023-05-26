@@ -12,8 +12,12 @@ const Gameboard = () => {
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [animateX, setAnimateX] = useState(false);
   const [animateO, setAnimateO] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleCellClick = (index) => {
+    if (isAnimating) {
+      return;
+    }
     const row = Math.floor(index / 3);
     const col = index % 3;
 
@@ -29,10 +33,12 @@ const Gameboard = () => {
       setGameState(updatedGameState);
       setAnimateX(true);
       setAnimateO(true);
+      setIsAnimating(true);
 
       setTimeout(() => {
         setAnimateO(false);
         setAnimateX(false);
+        setIsAnimating(false);
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
       }, 1000);
     }
