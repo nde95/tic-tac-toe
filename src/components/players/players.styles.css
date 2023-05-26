@@ -1,0 +1,50 @@
+.x {
+    width: 100%;
+    height: 100%;
+    stroke: black;
+    stroke-width: 5;
+  }
+
+  .x-path {
+    fill: none;
+    stroke: black;
+    stroke-width: 5;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: drawX 1s linear forwards;
+  }
+  
+  @keyframes drawX {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .o-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .o {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .o-circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 5;
+    stroke-dasharray: 255;
+    stroke-dashoffset: 255;
+    animation: drawO 1s linear forwards;
+  }
+  
+  @keyframes drawO {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  
