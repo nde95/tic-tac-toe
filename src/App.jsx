@@ -1,13 +1,14 @@
-import { useState } from 'react'
 import './App.css'
 import Gameboard from './components/gameboard/gameboard.components'
+import { GameProvider } from './context/gamecontext';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-     <Gameboard />
+    <GameProvider>
+      <Gameboard />
+    </GameProvider>
     </>
   )
 }
