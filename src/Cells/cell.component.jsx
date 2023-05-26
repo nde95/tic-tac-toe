@@ -1,8 +1,24 @@
 import React from 'react';
-import './cell.styles.css';
+import styled, { css } from 'styled-components';
 
-const Cell = () => {
-  return <div className="cell"></div>;
+const Cell = ({ className, onClick, value }) => {
+  return <div className={className} onClick={onClick}>
+    {value}
+  </div>;
 };
 
-export default Cell;
+const StyledCell = styled(Cell)`
+  ${({ className }) => {
+    // Convert class names to CSS selectors and apply existing styles
+    const classSelectors = className.split(' ').map((name) => `.${name}`).join(',');
+    return css`
+      ${classSelectors} {
+        /* Existing class-based styles can be added here */
+        /* For example: */
+        /* border: 1px solid black; */
+      }
+    `;
+  }}
+`;
+
+export default StyledCell;
