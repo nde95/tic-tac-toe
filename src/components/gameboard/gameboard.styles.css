@@ -1,20 +1,22 @@
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* grid-gap: 10px; */
+    grid-gap: 10px;
     /* width: 300px; */
     margin: 0 auto;
+    background-color: #5DE95D;
   }
   
   .cell {
     cursor: pointer;
     width: 150px;
     height: 150px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 25px;
+    background-color: #31C3C3;
   }
 
   .top-left {
