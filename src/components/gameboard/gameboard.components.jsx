@@ -17,16 +17,14 @@ const Gameboard = () => {
 
     // Check if the game is won after updating the game state
     if (checkWin(currentPlayer)) {
-      // console.log(currentPlayer + ' wins!');
       setGameOver(true);
       Swal.fire({
-        title: currentPlayer + 'wins!',
+        title: currentPlayer + ' wins!',
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: 'Let Toby go first!',
         denyButtonText: `I want to go first!`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           setCurrentPlayer('O');
           resetGame();
@@ -44,7 +42,6 @@ const Gameboard = () => {
         confirmButtonText: 'Let Toby go first!',
         denyButtonText: `I want to go first!`,
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           resetGame();
         } else if (result.isDenied) {
