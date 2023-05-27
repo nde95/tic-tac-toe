@@ -18,10 +18,10 @@ const Gameboard = () => {
   const { handleWin, handleDraw } = useGameOver(currentPlayer, setCurrentPlayer, resetGame);
 
   useEffect(() => {
-    if (checkWin(currentPlayer)) {
+    if (checkWin(currentPlayer, gameState)) {
       setGameOver(true)
       handleWin();
-    } else if (checkDraw()) {
+    } else if (checkDraw(gameState)) {
       setGameOver(true)
       handleDraw();
     }
@@ -60,7 +60,7 @@ const Gameboard = () => {
         setAnimateX(false);
         setIsAnimating(false);
        // Perform a check to see if 'X' has won, if not, switch turns
-       if (!checkWin('X')) {
+       if (!checkWin('X', gameState)) {
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
       }
       }, 1000);

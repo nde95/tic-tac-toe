@@ -17,7 +17,7 @@ const GameProvider = ({ children }) => {
         setGameOver(false);
       };
 
-      const checkWin = (player) => {
+      const checkWin = (player, gameState) => {
         // Check rows
         for (let row = 0; row < 3; row++) {
           if (gameState[row][0] === player && gameState[row][1] === player && gameState[row][2] === player) {
@@ -40,9 +40,9 @@ const GameProvider = ({ children }) => {
         return false;
       };
 
-      const checkDraw = () => {
+      const checkDraw = (gameState) => {
         const isBoardFull = gameState.every(row => row.every(cell => cell !== ''));
-        if (isBoardFull && !checkWin('X') && !checkWin('O')) {
+        if (isBoardFull && !checkWin('X', gameState) && !checkWin('O', gameState)) {
           return true;
         }
         return false;
