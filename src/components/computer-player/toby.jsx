@@ -22,6 +22,8 @@ const Toby = ({ currentPlayer, setCurrentPlayer }) => {
             // Update the game over state
             setGameOver(true);
             return; // Exit the function, no more moves can be made
+          } else if (gameOver) {
+            return; // Exit the function, no more moves can be made
           }
       
           // Randomly select an empty square

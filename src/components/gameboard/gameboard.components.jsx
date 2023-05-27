@@ -7,20 +7,30 @@ import Toby from "../computer-player/toby";
 import { GameContext } from "../../context/gamecontext";
 
 const Gameboard = () => {
-  const {gameState, setGameState} = useContext(GameContext);
+  const {gameState, setGameState, gameOver, setGameOver, resetGame, checkWin} = useContext(GameContext);
 
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [animateX, setAnimateX] = useState(false);
   const [animateO, setAnimateO] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+    // Check if the game is won after updating the game state
+    if (checkWin(currentPlayer)) {
+      console.log(currentPlayer + ' wins!');
+      setGameOver(true);
+    }
+
+
   const handleCellClick = (index) => {
     if (isAnimating) {
       return;
+    } else if (gameOver) {
+      return;
     }
+  
     const row = Math.floor(index / 3);
     const col = index % 3;
-
+  
     if (gameState[row][col] === '') {
       const updatedGameState = gameState.map((rowArr, rowIndex) =>
         rowArr.map((cell, colIndex) => {
@@ -30,11 +40,12 @@ const Gameboard = () => {
           return cell;
         })
       );
+  
       setGameState(updatedGameState);
       setAnimateX(true);
       setAnimateO(true);
       setIsAnimating(true);
-
+  
       setTimeout(() => {
         setAnimateO(false);
         setAnimateX(false);
@@ -43,6 +54,7 @@ const Gameboard = () => {
       }, 1000);
     }
   };
+  
 
   const getValue = (index) => {
     const row = Math.floor(index / 3);
