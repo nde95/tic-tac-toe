@@ -1,11 +1,11 @@
 import "./gameboard.styles.css";
 import StyledCell from "../Cells/cell.component";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import PlayerX from "../players/playerX.component";
 import PlayerO from "../players/playerO.component";
 import Toby from "../computer-player/toby";
 import { GameContext } from "../../context/gamecontext";
-import Swal from "sweetalert2";
+import useGameOver from "../game-over-alert/game-over-alert.component";
 
 const Gameboard = () => {
   const {gameState, setGameState, gameOver, setGameOver, resetGame, checkWin, checkDraw} = useContext(GameContext);
@@ -15,41 +15,18 @@ const Gameboard = () => {
   const [animateO, setAnimateO] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-    // Check if the game is won after updating the game state
+  const { handleWin, handleDraw } = useGameOver(currentPlayer, setCurrentPlayer, resetGame);
+
+  useEffect(() => {
     if (checkWin(currentPlayer)) {
-      setGameOver(true);
-      Swal.fire({
-        title: currentPlayer + ' wins!',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Let Toby go first!',
-        denyButtonText: `I want to go first!`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setCurrentPlayer('O');
-          resetGame();
-        } else if (result.isDenied) {
-          setCurrentPlayer('X');
-          resetGame();
-        }
-      })
+      setGameOver(true)
+      handleWin();
     } else if (checkDraw()) {
-      setGameOver(true);
-      Swal.fire({
-        title: 'It\'s a draw!',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Let Toby go first!',
-        denyButtonText: `I want to go first!`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          resetGame();
-        } else if (result.isDenied) {
-          setCurrentPlayer('X');
-          resetGame();
-        }
-      })
+      setGameOver(true)
+      handleDraw();
     }
+  }, [currentPlayer]);
+
 
   const handleCellClick = (index) => {
     if (isAnimating) {
@@ -57,6 +34,8 @@ const Gameboard = () => {
     } else if (gameOver) {
       return;
     }
+
+
   
     const row = Math.floor(index / 3);
     const col = index % 3;
@@ -80,7 +59,10 @@ const Gameboard = () => {
         setAnimateO(false);
         setAnimateX(false);
         setIsAnimating(false);
+       // Perform a check to see if 'X' has won, if not, switch turns
+       if (!checkWin('X')) {
         setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      }
       }, 1000);
     }
   };
