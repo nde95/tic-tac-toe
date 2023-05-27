@@ -10,9 +10,15 @@ const GameProvider = ({ children }) => {
       ];
     
       const [gameState, setGameState] = useState(initialGameState);
+      const [gameOver, setGameOver] = useState(false);
+
+      const resetGame = () => {
+        setGameState(initialGameState);
+        setGameOver(false);
+      };
     
       return (
-        <GameContext.Provider value={{gameState, setGameState}}>
+        <GameContext.Provider value={{gameState, setGameState, gameOver, resetGame, setGameOver}}>
           {children}
         </GameContext.Provider>
       );

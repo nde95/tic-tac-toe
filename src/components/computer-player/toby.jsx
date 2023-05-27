@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { GameContext } from "../../context/gamecontext";
 
 const Toby = ({ currentPlayer, setCurrentPlayer }) => {
-    const {gameState, setGameState} = useContext(GameContext);
+    const {gameState, setGameState, gameOver, setGameOver} = useContext(GameContext);
 
     const makeTobyMove = () => {
         // Check if it's PlayerO's turn
@@ -16,6 +16,13 @@ const Toby = ({ currentPlayer, setCurrentPlayer }) => {
               }
             });
           });
+
+           // Check if there are no more empty squares (board is full)
+           if (emptySquares.length === 0) {
+            // Update the game over state
+            setGameOver(true);
+            return; // Exit the function, no more moves can be made
+          }
       
           // Randomly select an empty square
           const randomIndex = Math.floor(Math.random() * emptySquares.length);
@@ -39,7 +46,7 @@ const Toby = ({ currentPlayer, setCurrentPlayer }) => {
 
     useEffect(() => {
       makeTobyMove();
-    }, [currentPlayer]);
+    }, [currentPlayer, gameOver]);
 
     return null; 
 }
