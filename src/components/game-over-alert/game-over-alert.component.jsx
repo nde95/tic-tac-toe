@@ -12,6 +12,7 @@ const useGameOver = (currentPlayer, setCurrentPlayer, resetGame) => {
       showCancelButton: false,
       confirmButtonText: 'Let Toby go first!',
       denyButtonText: `I want to go first!`,
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         resetGame();
@@ -31,6 +32,7 @@ const useGameOver = (currentPlayer, setCurrentPlayer, resetGame) => {
       showCancelButton: false,
       confirmButtonText: 'Let Toby go first!',
       denyButtonText: `I want to go first!`,
+      allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
         resetGame();
