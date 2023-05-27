@@ -7,10 +7,10 @@ const Toby = ({ currentPlayer, setCurrentPlayer }) => {
     const { handleWin, handleDraw } = useGameOver(currentPlayer, setCurrentPlayer, resetGame);
 
     useEffect(() => {
-      if (checkWin(currentPlayer)) {
+      if (checkWin(currentPlayer, gameState)) {
         setGameOver(true)
         handleWin();
-      } else if (checkDraw()) {
+      } else if (checkDraw(gameState)) {
         setGameOver(true)
         handleDraw();
       }
@@ -25,7 +25,7 @@ const Toby = ({ currentPlayer, setCurrentPlayer }) => {
         // Check if it's PlayerO's turn
          else if (currentPlayer === 'O') {
             // If X has won or the game has been drawn, don't make a move
-            if (checkWin('X') || checkDraw()) {
+            if (checkWin('X', gameState) || checkDraw(gameState)) {
                 // pull the alert and force turn back to X to disable game board
                 handleWin();
                 setCurrentPlayer('X')
@@ -63,24 +63,25 @@ const Toby = ({ currentPlayer, setCurrentPlayer }) => {
               return cell;
             })
           );
+            // Update the game state with Toby's move
+            setGameState(updatedGameState);
 
-           // Check if Toby has won after making his move
+            // Check if Toby has won after making his move
             if (checkWin('O', updatedGameState)) {
-                setGameState(updatedGameState);
+                setGameState(updatedGameState)
                 setGameOver(true);
                 handleWin();
                 return; // Exit the function as the game is over
             } else if (checkDraw(updatedGameState)) {
-                setGameState(updatedGameState);
+                setGameState(updatedGameState)
                 setGameOver(true);
                 handleDraw();
                 return; // Exit the function as the game is over
             }
 
-            // If Toby hasn't won and the game is not a draw, update the gameState and switch turn to X
-            setGameState(updatedGameState);
+            // If Toby hasn't won and the game is not a draw, switch turn to X
             setCurrentPlayer('X');
-        }
+            }
       };
 
     useEffect(() => {
