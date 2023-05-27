@@ -15,8 +15,8 @@ const useGameOver = (currentPlayer, setCurrentPlayer, resetGame) => {
       allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
-        resetGame();
         setCurrentPlayer('O');
+        resetGame();
       } else if (result.isDenied) {
         setCurrentPlayer('X');
         resetGame();
@@ -35,6 +35,7 @@ const useGameOver = (currentPlayer, setCurrentPlayer, resetGame) => {
       allowOutsideClick: false
     }).then((result) => {
       if (result.isConfirmed) {
+        setCurrentPlayer('O');
         resetGame();
       } else if (result.isDenied) {
         setCurrentPlayer('X');
