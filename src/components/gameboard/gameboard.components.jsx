@@ -5,9 +5,10 @@ import PlayerX from "../players/playerX.component";
 import PlayerO from "../players/playerO.component";
 import Toby from "../computer-player/toby";
 import { GameContext } from "../../context/gamecontext";
+import Swal from "sweetalert2";
 
 const Gameboard = () => {
-  const {gameState, setGameState, gameOver, setGameOver, resetGame, checkWin} = useContext(GameContext);
+  const {gameState, setGameState, gameOver, setGameOver, resetGame, checkWin, checkDraw} = useContext(GameContext);
 
   const [currentPlayer, setCurrentPlayer] = useState('X');
   const [animateX, setAnimateX] = useState(false);
@@ -16,10 +17,41 @@ const Gameboard = () => {
 
     // Check if the game is won after updating the game state
     if (checkWin(currentPlayer)) {
-      console.log(currentPlayer + ' wins!');
+      // console.log(currentPlayer + ' wins!');
       setGameOver(true);
+      Swal.fire({
+        title: currentPlayer + 'wins!',
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Let Toby go first!',
+        denyButtonText: `I want to go first!`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          resetGame();
+        } else if (result.isDenied) {
+          setCurrentPlayer('X');
+          resetGame();
+        }
+      })
+    } else if (checkDraw()) {
+      setGameOver(true);
+      Swal.fire({
+        title: 'It\'s a draw!',
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: 'Let Toby go first!',
+        denyButtonText: `I want to go first!`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          resetGame();
+        } else if (result.isDenied) {
+          setCurrentPlayer('X');
+          resetGame();
+        }
+      })
     }
-
 
   const handleCellClick = (index) => {
     if (isAnimating) {
