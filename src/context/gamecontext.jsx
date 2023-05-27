@@ -39,10 +39,18 @@ const GameProvider = ({ children }) => {
         }
         return false;
       };
+
+      const checkDraw = () => {
+        const isBoardFull = gameState.every(row => row.every(cell => cell !== ''));
+        if (isBoardFull && !checkWin('X') && !checkWin('O')) {
+          return true;
+        }
+        return false;
+      };
       
     
       return (
-        <GameContext.Provider value={{gameState, setGameState, gameOver, resetGame, setGameOver, checkWin}}>
+        <GameContext.Provider value={{gameState, setGameState, gameOver, resetGame, setGameOver, checkWin, checkDraw}}>
           {children}
         </GameContext.Provider>
       );
